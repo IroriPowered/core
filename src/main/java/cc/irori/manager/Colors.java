@@ -1,0 +1,19 @@
+package cc.irori.manager;
+
+import java.awt.*;
+
+public class Colors {
+
+    // Private constructor to prevent instantiation
+    private Colors() {
+    }
+
+    public static final Color YELLOW = new Color(0xFFFF55);
+    public static final Color GOLD_LIGHT = new Color(0xFFD47F);
+    public static final Color MUSTARD = new Color(0xFFD42A);
+
+    public static final Color SKY_LIGHT = new Color(0xAAD4FF);
+    public static final Color BLUE_LIGHT = new Color(0x7070FF);
+
+    public static final Color TEAL = new Color(0x2AFFAA);
+}

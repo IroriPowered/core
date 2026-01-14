@@ -1,0 +1,17 @@
+{
+  "Group": "IroriPowered",
+  "Name": "Manager",
+  "Version": "1.0.0",
+  "Website": "https://www.irori.cc/",
+  "Description": "Management utilities",
+  "Main": "cc.irori.manager.ManagerPlugin",
+  "Authors": [
+    {
+      "Name": "KabanFriends",
+      "Url": "https://github.com/KabanFriends"
+    }
+  ],
+  "ServerVersion": "*",
+  "Dependencies": {},
+  "OptionalDependencies": {}
+}
