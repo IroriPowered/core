@@ -37,7 +37,7 @@ public class CorePlugin extends JavaPlugin {
     private static final String DISCORD_INVITE = "ajFSfjbpcX";
 
     private static final List<Integer> RESTART_HOURS = List.of(2, 14);
-    private static final List<Integer> ANNOUNCE_SECONDS = List.of(1800, 600, 300, 60, 30, 10, 5, 4, 3, 2, 1);
+    private static final List<Integer> ANNOUNCE_SECONDS = List.of(1800, 600, 300, 240, 180, 120, 60, 30, 10, 5, 4, 3, 2, 1);
 
     private static final DateTimeFormatter DAY_FORMATTER = DateTimeFormatter.ofPattern("yyyy/MM/dd");
     private static final DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern("HH:mm");
