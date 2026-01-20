@@ -66,6 +66,8 @@ public class CorePlugin extends JavaPlugin {
             sendNextRestart(player);
         }
 
+        scheduleNextRestart();
+
         // Periodically restart the server if no players are online
         emptyRestartExecutor.scheduleAtFixedRate(() -> {
             if (Universe.get().getPlayerCount() == 0) {
@@ -183,7 +185,7 @@ public class CorePlugin extends JavaPlugin {
         player.sendMessage(Message.join(
                 Message.raw("(!)").color(Colors.ORANGE).bold(true),
                 SPACE,
-                Message.raw("Server RE-START in"),
+                Message.raw("Server RE-START in "),
                 Message.raw(getTimeString(secondsLeft)).color(Colors.YELLOW)
         ));
 
