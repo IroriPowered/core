@@ -1,5 +1,7 @@
 package cc.irori.core;
 
+import cc.irori.core.command.ShigenCommand;
+import cc.irori.core.command.SpawnCommand;
 import cc.irori.shodo.ShodoAPI;
 import com.hypixel.hytale.component.Holder;
 import com.hypixel.hytale.component.Ref;
@@ -12,6 +14,7 @@ import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.ShutdownReason;
 import com.hypixel.hytale.server.core.entity.entities.Player;
 import com.hypixel.hytale.server.core.entity.entities.player.data.PlayerConfigData;
+import com.hypixel.hytale.server.core.event.events.player.AddPlayerToWorldEvent;
 import com.hypixel.hytale.server.core.event.events.player.PlayerConnectEvent;
 import com.hypixel.hytale.server.core.event.events.player.PlayerDisconnectEvent;
 import com.hypixel.hytale.server.core.event.events.player.PlayerReadyEvent;
@@ -31,10 +34,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -48,9 +49,6 @@ public class CorePlugin extends JavaPlugin {
     private static final List<Integer> RESTART_HOURS = List.of(2, 14);
     private static final List<Integer> ANNOUNCE_SECONDS = List.of(1800, 600, 300, 240, 180, 120, 60, 30, 10, 5, 4, 3, 2, 1);
 
-    private static final DateTimeFormatter DAY_FORMATTER = DateTimeFormatter.ofPattern("yyyy/MM/dd");
-    private static final DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern("HH:mm");
-
     private static final Message SPACE = Message.raw(" ");
 
     private static final ZoneId TZ = ZoneId.of("Asia/Tokyo");
@@ -61,6 +59,8 @@ public class CorePlugin extends JavaPlugin {
     private final Set<UUID> onlinePlayers = new HashSet<>();
     private final Set<UUID> joiningPlayers = new HashSet<>();
 
+    private final Map<UUID, ShigenHud> shigenHuds = new ConcurrentHashMap<>();
+
     public CorePlugin(@NonNullDecl JavaPluginInit init) {
         super(init);
     }
@@ -70,8 +70,14 @@ public class CorePlugin extends JavaPlugin {
         LOGGER.atInfo().log("Welcome to Irori-Manager :)");
 
         // Add currently online players
-        for (PlayerRef player : Universe.get().getPlayers()) {
-            onlinePlayers.add(player.getUuid());
+        for (PlayerRef ref : Universe.get().getPlayers()) {
+            onlinePlayers.add(ref.getUuid());
+
+            Store<EntityStore> store = ref.getReference().getStore();
+            store.getExternalData().getWorld().execute(() -> {
+                Player player = store.getComponent(ref.getReference(), Player.getComponentType());
+                shigenHuds.put(ref.getUuid(), new ShigenHud(player, ref));
+            });
         }
 
         scheduleNextRestart();
@@ -119,12 +125,26 @@ public class CorePlugin extends JavaPlugin {
                 HeadRotation headRotationComponent = holder.ensureAndGetComponent(HeadRotation.getComponentType());
                 headRotationComponent.teleportRotation(transform.getRotation());
             }
+
+            shigenHuds.put(event.getPlayerRef().getUuid(), new ShigenHud(player, event.getPlayerRef()));
         });
         getEventRegistry().register(PlayerDisconnectEvent.class, event -> {
                 if (onlinePlayers.remove(event.getPlayerRef().getUuid())) {
                     broadcastMessage(event.getPlayerRef().getUsername() + " left the game");
                     ShodoAPI.getInstance().broadcastMessage(event.getPlayerRef().getUsername() + "が退出しました", Colors.YELLOW);
+
+                    shigenHuds.remove(event.getPlayerRef().getUuid());
                 }
+        });
+
+        getEventRegistry().registerGlobal(AddPlayerToWorldEvent.class, event -> {
+            PlayerRef ref = event.getHolder().getComponent(PlayerRef.getComponentType());
+            ShigenHud shigenHud = shigenHuds.get(ref.getUuid());
+
+            if (shigenHud != null) {
+                shigenHud.setVisible(isShigenWorld(event.getWorld()));
+                shigenHud.update();
+            }
         });
 
         getEventRegistry().registerGlobal(PlayerReadyEvent.class, event -> {
@@ -157,6 +177,9 @@ public class CorePlugin extends JavaPlugin {
                 ShodoAPI.getInstance().sendMessage(playerRef, "[!] 資源ワールドに入りました [!]", Colors.SCARLET_LIGHT);
             }
         });
+
+        getCommandRegistry().registerCommand(new SpawnCommand());
+        getCommandRegistry().registerCommand(new ShigenCommand());
     }
 
     @Override
