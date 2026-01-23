@@ -12,7 +12,10 @@
     }
   ],
   "ServerVersion": "*",
-  "Dependencies": {},
+  "Dependencies": {
+    "IroriPowered:Shodo": "*",
+    "Buuz135:MultipleHUD": "*"
+  },
   "OptionalDependencies": {},
   "IncludesAssetPack": true
 }
