@@ -142,6 +142,7 @@ public class CorePlugin extends JavaPlugin {
             ShigenHud shigenHud = shigenHuds.get(ref.getUuid());
 
             if (shigenHud != null) {
+                shigenHud.setShigenId(getShigenId(event.getWorld()));
                 shigenHud.setVisible(isShigenWorld(event.getWorld()));
                 shigenHud.update();
             }
@@ -281,5 +282,12 @@ public class CorePlugin extends JavaPlugin {
             }
         }
         return shigen;
+    }
+
+    public static int getShigenId(World world) {
+        if (isShigenWorld(world)) {
+            return Integer.parseInt(world.getName().substring(6));
+        }
+        return 0;
     }
 }

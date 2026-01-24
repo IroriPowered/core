@@ -18,13 +18,12 @@ public class ShigenHud extends CustomUIHud {
             .build();
 
     private boolean isVisible = false;
+    private int shigenId = 0;
 
     public ShigenHud(Player player, PlayerRef playerRef) {
         super(playerRef);
         this.player = player;
-
-        textBox.typesetter().addMessage("/spawn → 資源ワールドを出る", Colors.SKY_LIGHT);
-        textBox.typesetter().addMessage("資源ワールド (リセットあり)", Colors.SCARLET_LIGHT);
+        updateMessage();
     }
 
     @Override
@@ -40,7 +39,18 @@ public class ShigenHud extends CustomUIHud {
         isVisible = visible;
     }
 
+    public void setShigenId(int shigenId) {
+        this.shigenId = shigenId;
+        updateMessage();
+    }
+
     public void update() {
         MultipleHUD.getInstance().setCustomHud(player, getPlayerRef(), "IroriCore_ShigenHUD", this);
+    }
+
+    private void updateMessage() {
+        textBox.typesetter().clear();
+        textBox.typesetter().addMessage("/spawn → 資源ワールドを出る", Colors.SKY_LIGHT);
+        textBox.typesetter().addMessage("資源ワールド" + shigenId + " (リセットあり)", Colors.SCARLET_LIGHT);
     }
 }
