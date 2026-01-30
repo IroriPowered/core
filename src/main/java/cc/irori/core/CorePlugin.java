@@ -82,14 +82,6 @@ public class CorePlugin extends JavaPlugin {
 
         scheduleNextRestart();
 
-        // Periodically restart the server if no players are online
-        emptyRestartExecutor.scheduleAtFixedRate(() -> {
-            if (Universe.get().getPlayerCount() == 0) {
-                LOGGER.atInfo().log("No players online!");
-                HytaleServer.get().shutdownServer(new ShutdownReason(0, "Scheduled restart - No players online"));
-            }
-        }, 15L, 15L, TimeUnit.MINUTES);
-
         // Send join and leave messages
         getEventRegistry().register(PlayerConnectEvent.class, event -> {
             Holder<EntityStore> holder = event.getHolder();
@@ -188,9 +180,9 @@ public class CorePlugin extends JavaPlugin {
 
     @Override
     protected void shutdown() {
-        emptyRestartExecutor.shutdownNow();
-        scheduledRestartExecutor.shutdownNow();
         LOGGER.atInfo().log("Irori-Manager shutting down. Goodbye!");
+        emptyRestartExecutor.shutdown();
+        scheduledRestartExecutor.shutdown();
     }
 
     private void scheduleNextRestart() {
