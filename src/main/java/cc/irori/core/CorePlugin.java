@@ -9,7 +9,6 @@ import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.logger.HytaleLogger;
 import com.hypixel.hytale.math.vector.Transform;
-import com.hypixel.hytale.math.vector.Vector3f;
 import com.hypixel.hytale.server.core.HytaleServer;
 import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.ShutdownReason;
@@ -34,7 +33,6 @@ import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Executors;
@@ -176,9 +174,6 @@ public class CorePlugin extends JavaPlugin {
         getCommandRegistry().registerCommand(new SpawnCommand());
         getCommandRegistry().registerCommand(new ShigenCommand());
         getCommandRegistry().registerCommand(new CoreDebugCommand());
-
-        // Server watchdog thread
-        new ServerWatchdog(Universe.get().getDefaultWorld()).start();
     }
 
     @Override
