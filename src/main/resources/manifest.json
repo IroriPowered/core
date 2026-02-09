@@ -13,6 +13,7 @@
   ],
   "ServerVersion": "*",
   "Dependencies": {
+    "com.azuredoom:levelingcore": "*",
     "IroriPowered:Shodo": "*",
     "Buuz135:MultipleHUD": "*"
   },

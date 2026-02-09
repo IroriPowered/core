@@ -9,6 +9,7 @@ repositories {
     mavenCentral()
     maven("https://maven.hytale.com/release")
     maven("https://maven.hytale.com/pre-release")
+    maven("https://maven.azuredoom.com/mods")
     maven("https://maven.irori.cc/repository/public/")
     maven("https://maven.hytale-modding.info/releases/")
 }
@@ -17,4 +18,5 @@ dependencies {
     compileOnly(libs.hytale)
     compileOnly(libs.shodo)
     compileOnly(libs.multiplehud)
+    compileOnly(libs.levelingcore)
 }

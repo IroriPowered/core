@@ -2,8 +2,10 @@
 hytale = "2026.01.22-6f8bdbdc4"
 shodo = "1.2.0-SNAPSHOT"
 multiplehud = "1.0.1"
+levelingcore = "0.+"
 
 [libraries]
 hytale = { group = "com.hypixel.hytale", name = "Server", version.ref = "hytale" }
 shodo = { group = "cc.irori", name = "shodo", version.ref = "shodo" }
 multiplehud = { group = "com.buuz135", name = "MultipleHUD", version.ref = "multiplehud" }
+levelingcore = { group = "com.azuredoom.levelingcore", name = "LevelingCore", version.ref = "levelingcore" }

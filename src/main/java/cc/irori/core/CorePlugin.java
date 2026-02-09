@@ -1,6 +1,7 @@
 package cc.irori.core;
 
 import cc.irori.core.command.CoreDebugCommand;
+import cc.irori.core.command.MigrateLevelCommand;
 import cc.irori.core.command.ShigenCommand;
 import cc.irori.core.command.SpawnCommand;
 import cc.irori.shodo.ShodoAPI;
@@ -173,6 +174,7 @@ public class CorePlugin extends JavaPlugin {
 
         getCommandRegistry().registerCommand(new SpawnCommand());
         getCommandRegistry().registerCommand(new ShigenCommand());
+        getCommandRegistry().registerCommand(new MigrateLevelCommand());
         getCommandRegistry().registerCommand(new CoreDebugCommand());
     }
 
