@@ -21,6 +21,10 @@ import com.hypixel.hytale.server.core.event.events.player.PlayerDisconnectEvent;
 import com.hypixel.hytale.server.core.event.events.player.PlayerReadyEvent;
 import com.hypixel.hytale.server.core.modules.entity.component.HeadRotation;
 import com.hypixel.hytale.server.core.modules.entity.component.TransformComponent;
+import com.hypixel.hytale.server.core.modules.entitystats.EntityStatMap;
+import com.hypixel.hytale.server.core.modules.entitystats.EntityStatValue;
+import com.hypixel.hytale.server.core.modules.entitystats.asset.DefaultEntityStatTypes;
+import com.hypixel.hytale.server.core.modules.entitystats.modifier.Modifier;
 import com.hypixel.hytale.server.core.plugin.JavaPlugin;
 import com.hypixel.hytale.server.core.plugin.JavaPluginInit;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
@@ -61,6 +65,8 @@ public class CorePlugin extends JavaPlugin {
 
     private final Map<UUID, ShigenHud> shigenHuds = new ConcurrentHashMap<>();
 
+    private static Set<Integer> statIndexes;
+
     public CorePlugin(@NonNullDecl JavaPluginInit init) {
         super(init);
     }
@@ -68,6 +74,14 @@ public class CorePlugin extends JavaPlugin {
     @Override
     protected void start() {
         LOGGER.atInfo().log("Welcome to Irori-Manager :)");
+
+        statIndexes = Set.of(
+                DefaultEntityStatTypes.getHealth(),
+                DefaultEntityStatTypes.getOxygen(),
+                DefaultEntityStatTypes.getStamina(),
+                DefaultEntityStatTypes.getSignatureEnergy(),
+                DefaultEntityStatTypes.getAmmo()
+        );
 
         // Add currently online players
         for (PlayerRef ref : Universe.get().getPlayers()) {
@@ -168,6 +182,32 @@ public class CorePlugin extends JavaPlugin {
                 if (isShigenWorld(world)) {
                     ShodoAPI.getInstance().sendMessage(playerRef, "このワールドは定期的にリセットされるので、拠点の製作などは控えてください。", Colors.SCARLET_LIGHT);
                     ShodoAPI.getInstance().sendMessage(playerRef, "[!] 資源ワールドに入りました [!]", Colors.SCARLET_LIGHT);
+                }
+
+                EntityStatMap statMap = store.getComponent(ref, EntityStatMap.getComponentType());
+                if (statMap != null) {
+                    for (int index : statIndexes) {
+                        EntityStatValue value = statMap.get(index);
+                        if (value == null) {
+                            continue;
+                        }
+                        Map<String, Modifier> modifiers = value.getModifiers();
+                        if (modifiers == null) {
+                            continue;
+                        }
+
+                        List<String> toRemove = new ArrayList<>();
+                        for (String key : modifiers.keySet()) {
+                            if (key.startsWith("RPGLeveling")) {
+                                toRemove.add(key);
+                            }
+                        }
+
+                        for (String key : toRemove) {
+                            statMap.removeModifier(index, key);
+                            LOGGER.atInfo().log("Removed RPGLeveling modifier '%s' from player %s", key, playerRef.getUsername());
+                        }
+                    }
                 }
             });
         });
