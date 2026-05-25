@@ -21,7 +21,7 @@ public class ShigenHud extends CustomUIHud {
     private int shigenId = 0;
 
     public ShigenHud(Player player, PlayerRef playerRef) {
-        super(playerRef);
+        super(playerRef, "IroriCore_ShigenHUD");
         this.player = player;
         updateMessage();
     }
@@ -45,7 +45,7 @@ public class ShigenHud extends CustomUIHud {
     }
 
     public void update() {
-        MultipleHUD.getInstance().setCustomHud(player, getPlayerRef(), "IroriCore_ShigenHUD", this);
+        player.getHudManager().addCustomHud(getPlayerRef(), this);
     }
 
     private void updateMessage() {

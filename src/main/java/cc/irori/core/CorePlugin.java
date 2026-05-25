@@ -239,7 +239,7 @@ public class CorePlugin extends JavaPlugin {
         }
 
         scheduledRestartExecutor.schedule(() ->
-                        HytaleServer.get().shutdownServer(ShutdownReason.SHUTDOWN.withMessage("Automatic restart")),
+                        HytaleServer.get().shutdownServer(ShutdownReason.SHUTDOWN.withMessage(Message.raw("Automatic restart"))),
                 delayMillis, TimeUnit.MILLISECONDS);
     }
 
