@@ -116,7 +116,7 @@ public class CorePlugin extends JavaPlugin {
             World lastWorld = Universe.get().getWorld(lastWorldName);
 
             // Trying to join a shigen world that no longer exists
-            if (lastWorld == null && isShigenWorld(lastWorldName)) {
+            if (lastWorldName != null && lastWorld == null && isShigenWorld(lastWorldName)) {
                 World defaultWorld = Universe.get().getDefaultWorld();
 
                 Transform spawn = defaultWorld.getWorldConfig().getSpawnProvider().getSpawnPoint(event.getPlayerRef().getReference(), event.getPlayerRef().getReference().getStore());
