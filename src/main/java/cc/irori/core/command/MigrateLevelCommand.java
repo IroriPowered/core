@@ -1,8 +1,10 @@
 package cc.irori.core.command;
 
 import cc.irori.core.Logs;
+/*
 import com.azuredoom.levelingcore.api.LevelingCoreApi;
 import com.azuredoom.levelingcore.level.LevelServiceImpl;
+*/
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.stream.JsonReader;
@@ -10,8 +12,8 @@ import com.hypixel.hytale.logger.HytaleLogger;
 import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.command.system.CommandContext;
 import com.hypixel.hytale.server.core.command.system.basecommands.CommandBase;
-import org.checkerframework.checker.nullness.qual.NonNull;
 
+import javax.annotation.Nonnull;
 import java.io.File;
 import java.io.FileReader;
 import java.util.Optional;
@@ -34,7 +36,8 @@ public class MigrateLevelCommand extends CommandBase {
     }
 
     @Override
-    protected void executeSync(@NonNull CommandContext context) {
+    protected void executeSync(@Nonnull CommandContext context) {
+        /*
         Optional<LevelServiceImpl> apiOptional = LevelingCoreApi.getLevelServiceIfPresent();
         if (apiOptional.isEmpty()) {
             context.sendMessage(Message.raw("LevelingCore is not available."));
@@ -96,6 +99,7 @@ public class MigrateLevelCommand extends CommandBase {
                 LOGGER.atSevere().withCause(e).log("Error migrating player data for UUID: " + uuid);
             }
         }
+        */
     }
 
     private static double xpRequiredForLevel(int level) {

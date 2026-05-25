@@ -17,6 +17,4 @@ repositories {
 dependencies {
     compileOnly(libs.hytale)
     compileOnly(libs.shodo)
-    compileOnly(libs.multiplehud)
-    compileOnly(libs.levelingcore)
 }

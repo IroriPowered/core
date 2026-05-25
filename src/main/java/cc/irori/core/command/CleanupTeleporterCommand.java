@@ -12,8 +12,8 @@ import com.hypixel.hytale.server.core.command.system.CommandContext;
 import com.hypixel.hytale.server.core.command.system.basecommands.CommandBase;
 import com.hypixel.hytale.server.core.universe.Universe;
 import com.hypixel.hytale.server.core.universe.world.World;
-import org.checkerframework.checker.nullness.qual.NonNull;
 
+import javax.annotation.Nonnull;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -29,7 +29,7 @@ public class CleanupTeleporterCommand extends CommandBase {
     }
 
     @Override
-    protected void executeSync(@NonNull CommandContext context) {
+    protected void executeSync(@Nonnull CommandContext context) {
         LOGGER.atInfo().log("Clearing ExtendedTeleportHistory teleporters");
         int removed1 = 0;
         File file = new File("universe/ExtendedTeleportHistory/Teleporters.json");

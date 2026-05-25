@@ -1,7 +1,6 @@
 package cc.irori.core;
 
 import cc.irori.shodo.TextBox;
-import com.buuz135.mhud.MultipleHUD;
 import com.hypixel.hytale.server.core.entity.entities.Player;
 import com.hypixel.hytale.server.core.entity.entities.player.hud.CustomUIHud;
 import com.hypixel.hytale.server.core.ui.builder.UICommandBuilder;
